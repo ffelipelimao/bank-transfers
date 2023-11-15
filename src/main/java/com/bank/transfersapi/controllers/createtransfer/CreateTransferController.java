@@ -2,6 +2,7 @@ package com.bank.transfersapi.controllers.createtransfer;
 
 import com.bank.transfersapi.controllers.errors.HandlerError;
 import com.bank.transfersapi.entities.Transfer;
+import com.bank.transfersapi.errors.EmptyFromAccountException;
 import com.bank.transfersapi.errors.EmptyToAccountException;
 import com.bank.transfersapi.usecases.createtransfer.ICreateTransferUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class CreateTransferController {
                     .status(HttpStatus.CREATED)
                     .body(transferCreated);
 
-        } catch (EmptyToAccountException e) {
+        } catch (EmptyToAccountException | EmptyFromAccountException e) {
            return ResponseEntity
                .status(HttpStatus.BAD_REQUEST)
                .body(new HandlerError(HttpStatus.BAD_REQUEST, e.getMessage()));

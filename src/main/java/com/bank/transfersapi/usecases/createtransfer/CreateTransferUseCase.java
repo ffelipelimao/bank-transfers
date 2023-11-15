@@ -1,8 +1,11 @@
 package com.bank.transfersapi.usecases.createtransfer;
 
 import com.bank.transfersapi.entities.Transfer;
+import com.bank.transfersapi.errors.EmptyFromAccountException;
 import com.bank.transfersapi.errors.EmptyToAccountException;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class CreateTransferUseCase implements ICreateTransferUseCase {
@@ -12,9 +15,12 @@ public class CreateTransferUseCase implements ICreateTransferUseCase {
             throw new EmptyToAccountException("to account is empty");
         }
 
-        return new Transfer(
-                transfer.getValue(),
-                transfer.getFromAccountId(),
-                transfer.getToAccountId());
+        if (transfer.getFromAccountId() == null){
+            throw new EmptyFromAccountException("from account is empty");
+        }
+
+        transfer.setId(UUID.randomUUID().toString());
+
+        return transfer;
     }
 }
