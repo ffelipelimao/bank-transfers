@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=transfer
+      - POSTGRESQL_URL=postgres://username:password@localhost:5432/transfer?sslmode=disable
+    networks:
+      - delivery-network
+    ports:
+      - 5432:5432
+    volumes:
+      - delivery-postgresdb:/var/lib/postgresql/data
+
+volumes:
+  delivery-postgresdb:
+
+networks:
+  delivery-network:
+    name: delivery-network
